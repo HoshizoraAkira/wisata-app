@@ -20,7 +20,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const ButtonNavBar(selectedMenu: MenuState.home),
+      bottomNavigationBar: const ButtonNavBar(selectedMenu: MenuState.profile),
       appBar: AppBar(
         title: const Text('User Profile'),
         actions: [

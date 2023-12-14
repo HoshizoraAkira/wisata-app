@@ -4,7 +4,7 @@ import 'package:wisata_app/common/constants.dart';
 import 'package:wisata_app/screens/account_screen.dart';
 import 'package:wisata_app/screens/dashboard_screen.dart';
 
-enum MenuState { home, message, profile }
+enum MenuState { home, profile }
 
 class ButtonNavBar extends StatelessWidget {
   const ButtonNavBar({
@@ -45,14 +45,17 @@ class ButtonNavBar extends StatelessWidget {
                       ? primaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DashboardScreen())),
-              ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/message.svg"),
-                onPressed: () {},
+                onPressed: () {
+                  if(ModalRoute.of(context)?.settings.name != '/dashboard'){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DashboardScreen(),
+                            settings: const RouteSettings(name: '/dashboard')
+                        )
+                    );
+                  }
+                },
               ),
               IconButton(
                   icon: SvgPicture.asset(
@@ -62,10 +65,15 @@ class ButtonNavBar extends StatelessWidget {
                         : inActiveIconColor,
                   ),
                   onPressed: () {
-                    Navigator.push(
+                    if(ModalRoute.of(context)?.settings.name != '/account'){
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AccountScreen()));
+                            builder: (context) => const AccountScreen(),
+                            settings: const RouteSettings(name: '/account')
+                        ),
+                      );
+                    }
                   }),
             ],
           )),
