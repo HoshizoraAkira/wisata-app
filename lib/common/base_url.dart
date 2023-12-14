@@ -3,7 +3,7 @@ class BaseURL {
   static String baseURL = "${domain}api/";
 
   //Auth
-  static String urlLogin = "${baseURL}auth/login";
+  static String urlLogin = "https://dummyjson.com/auth/login";
   static String urlRegister = "${baseURL}auth/register";
   static String urlLogout = "${baseURL}auth/logout";
   static String urlRefreshToken = "${baseURL}auth/refresh-token";

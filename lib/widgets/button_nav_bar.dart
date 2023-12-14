@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wisata_app/common/constants.dart';
+import 'package:wisata_app/screens/account_screen.dart';
 import 'package:wisata_app/screens/dashboard_screen.dart';
 
 enum MenuState { home, message, profile }
@@ -61,10 +62,10 @@ class ButtonNavBar extends StatelessWidget {
                         : inActiveIconColor,
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ProfileScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AccountScreen()));
                   }),
             ],
           )),

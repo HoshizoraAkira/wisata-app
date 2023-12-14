@@ -5,16 +5,16 @@ import 'package:wisata_app/common/base_url.dart';
 import 'package:wisata_app/helper/session_manager.dart';
 
 class AuthService {
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String username, String password) async {
     final response = await http.post(
       Uri.parse(BaseURL.urlLogin),
-      body: {'email': email, 'password': password},
+      body: {'username': username, 'password': password},
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       await SessionManager.saveData(
-          data['acessToken'], data['data']['name'], data['data']['email']);
+          data['token'], data['firstName'], data['email'], data['username']);
       return {'success': true, 'message': 'Login berhasil'};
     } else {
       return {'success': false, 'message': 'Login gagal'};

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wisata_app/common/constants.dart';
 import 'package:wisata_app/helper/keyboard.dart';
 import 'package:wisata_app/helper/session_manager.dart';
-import 'package:wisata_app/screens/success_screen.dart';
+import 'package:wisata_app/screens/dashboard_screen.dart';
 import 'package:wisata_app/services/auth_services.dart';
 import 'package:wisata_app/common/size_config.dart';
 import 'package:wisata_app/widgets/custom_snackbar.dart';
@@ -24,7 +24,7 @@ Future<void> checkIsLogin(BuildContext context) async {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
+  String? username;
   String? password;
   bool? remember = false;
   String _error = '';
@@ -36,45 +36,44 @@ class _LoginScreenState extends State<LoginScreen> {
     checkIsLogin(context);
   }
 
-  // Future<void> _login() async {
-  //   try {
-  //     final user = await AuthService().login(email!, password!);
+  Future<void> _login() async {
+    try {
+      final user = await AuthService().login(username!, password!);
+      if (user.values.first) {
+        setState(() {
+          _error = '';
+        });
 
-  //     if (user.email.isNotEmpty) {
-  //       setState(() {
-  //         _error = '';
-  //       });
+        // Simpan data pengguna ke SharedPreferences
+        final prefs = await SessionManager.getInstance();
+        await prefs.saveUserData(username!);
 
-  //       // Simpan data pengguna ke SharedPreferences
-  //       final prefs = await SessionManager.getInstance();
-  //       await prefs.saveUserData(user.email);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const DashboardScreen();
+        }));
+      } else {
+        setState(() {
+          _error = 'Wrong Username or Password';
+        });
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        _error = 'Login Failed';
+      });
+    }
 
-  //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //         return const LoginSuccessScreen();
-  //       }));
-  //     } else {
-  //       setState(() {
-  //         _error = 'Wrong Email or Password';
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //     setState(() {
-  //       _error = 'Login Failed';
-  //     });
-  //   }
-
-  //   if (_error.isNotEmpty) {
-  //     CustomSnackbar.show(
-  //       scaffoldMessengerKey.currentState!,
-  //       _error,
-  //       SnackbarType.error,
-  //     );
-  //     setState(() {
-  //       _error = '';
-  //     });
-  //   }
-  // }
+    if (_error.isNotEmpty) {
+      CustomSnackbar.show(
+        scaffoldMessengerKey.currentState!,
+        _error,
+        SnackbarType.error,
+      );
+      setState(() {
+        _error = '';
+      });
+    }
+  }
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -121,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const Text(
-                        "Sign in with your email and password  \nor continue with social media",
+                        "Sign in with your username and password  \nor continue with social media",
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: SizeConfig.screenHeight * 0.08),
@@ -129,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            buildEmailFormField(),
+                            buildUsernameField(),
                             SizedBox(height: getProportionateScreenHeight(30)),
                             buildPasswordFormField(),
                             SizedBox(height: getProportionateScreenHeight(30)),
@@ -164,7 +163,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   KeyboardUtil.hideKeyboard(context);
-                                  // _login();
+                                  _login();
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) {
+                                  //     return const DashboardScreen();
+                                  //   }),
+                                  // );
                                 }
                               },
                             ),
@@ -222,24 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        return;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
-        }
-        return null;
-      },
       decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -249,31 +236,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildUsernameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => username = newValue,
       decoration: const InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Username",
+        hintText: "Enter your username  ",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),

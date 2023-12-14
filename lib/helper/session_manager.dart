@@ -7,12 +7,13 @@ class SessionManager {
   static SessionManager? _instance;
   static SharedPreferences? _preferences;
 
-  static Future<void> saveData(String token, String name, String email) async {
+  static Future<void> saveData(String token, String firstName, String email, String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
     prefs.setBool('isLogin', true);
-    prefs.setString('name', name);
+    prefs.setString('firstName', firstName);
     prefs.setString('email', email);
+    prefs.setString('username', username);
   }
 
   static Future<String?> getToken() async {
@@ -21,13 +22,9 @@ class SessionManager {
   }
 
   static Future<SessionManager> getInstance() async {
-    if (_instance == null) {
-      _instance = SessionManager();
-    }
+    _instance ??= SessionManager();
 
-    if (_preferences == null) {
-      _preferences = await SharedPreferences.getInstance();
-    }
+    _preferences ??= await SharedPreferences.getInstance();
 
     return _instance!;
   }
@@ -57,13 +54,17 @@ class SessionManager {
     }
   }
 
-  Future<void> saveUserData(String email) async {
+  Future<void> saveUserData(String username) async {
     await _preferences!.setBool('isLogin', true);
-    await _preferences!.setString('email', email);
+    await _preferences!.setString('username', username);
   }
 
   String? getEmail() {
     return _preferences!.getString('email');
+  }
+
+  String? getUsername() {
+    return _preferences!.getString('username');
   }
 
   getIsLogin() {
@@ -71,9 +72,11 @@ class SessionManager {
   }
 
   static Future<void> clearUserData() async {
-    await _preferences!.remove('isLogin');
-    await _preferences!.remove('email');
-    await _preferences!.remove('token');
-    await _preferences!.clear();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("isLogin");
+    prefs.remove("username");
+    prefs.remove("token");
+    prefs.remove("firstName");
+    prefs.clear();
   }
 }

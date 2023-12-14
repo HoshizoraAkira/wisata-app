@@ -13,6 +13,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPage = 0;
+
+  final PageController _pageController = PageController();
+  final Duration _animationDuration = const Duration(milliseconds: 500);
+
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to Wisata App, Let’s Vacation!",
@@ -29,46 +33,73 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _animateSplashScreen();
+  }
+
+  void _animateSplashScreen() {
+    Future.delayed(const Duration(seconds: 3), () {
+      if (currentPage < splashData.length - 1) {
+        _pageController.animateToPage(
+          currentPage + 1,
+          duration: _animationDuration,
+          curve: Curves.easeInOut,
+        );
+      } else {
+        _pageController.animateToPage(
+          0,
+          duration: _animationDuration,
+          curve: Curves.easeInOut,
+        );
+      }
+      _animateSplashScreen();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
         body: SafeArea(
-      child: SizedBox(
+        child: SizedBox(
         width: double.infinity,
         child: Column(
           children: <Widget>[
             Expanded(
               flex: 3,
               child: PageView.builder(
-                  onPageChanged: (value) {
-                    setState(() {
-                      currentPage = value;
-                    });
-                  },
-                  itemCount: splashData.length,
-                  itemBuilder: (context, index) => Column(
-                        children: <Widget>[
-                          const Spacer(),
-                          const Text(
-                            "Wisata App",
-                            style: TextStyle(
-                              fontSize: 36,
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            splashData[index]['text']!,
-                            textAlign: TextAlign.center,
-                          ),
-                          const Spacer(flex: 2),
-                          Image.asset(
-                            splashData[index]["image"]!,
-                            height: getProportionateScreenHeight(265),
-                            width: getProportionateScreenWidth(235),
-                          ),
-                        ],
-                      )),
+                controller: _pageController, // Add PageController
+                onPageChanged: (value) {
+                  setState(() {
+                    currentPage = value;
+                  });
+                },
+                itemCount: splashData.length,
+                itemBuilder: (context, index) => Column(
+                  children: <Widget>[
+                    const Spacer(),
+                    const Text(
+                      "Wisata App",
+                      style: TextStyle(
+                        fontSize: 36,
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      splashData[index]['text']!,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Spacer(flex: 2),
+                    Image.asset(
+                      splashData[index]["image"]!,
+                      height: getProportionateScreenHeight(265),
+                      width: getProportionateScreenWidth(235),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Expanded(
               flex: 2,
