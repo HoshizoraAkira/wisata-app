@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_app/models/tourism_place.dart';
+import 'package:wisata_app/models/news.dart';
 import 'package:wisata_app/utils/contants.dart';
 
 var informationTextStyle = const TextStyle(fontFamily: 'Oxygen');
 
-class DetailScreen extends StatelessWidget {
-  final TourismPlace place;
+class DetailNews extends StatelessWidget {
+  final TourismNews news;
 
-  const DetailScreen({Key? key, required this.place}) : super(key: key);
+  const DetailNews({Key? key, required this.news}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class DetailScreen extends StatelessWidget {
           children: <Widget>[
             Stack(
               children: <Widget>[
-                Image.asset(place.imageAsset),
+                Image.network(news.imageUrl),
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -47,7 +47,7 @@ class DetailScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 16.0),
               child: Text(
-                place.name,
+                news.title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 30.0,
@@ -65,27 +65,7 @@ class DetailScreen extends StatelessWidget {
                       const Icon(Icons.calendar_today),
                       const SizedBox(height: 8.0),
                       Text(
-                        place.openDays,
-                        style: informationTextStyle,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      const Icon(Icons.access_time),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        place.openTime,
-                        style: informationTextStyle,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      const Icon(Icons.monetization_on),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        place.ticketPrice,
+                        news.date,
                         style: informationTextStyle,
                       ),
                     ],
@@ -96,27 +76,12 @@ class DetailScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                place.description,
+                news.content,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontFamily: 'Oxygen',
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: place.imageUrls.map((url) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(url),
-                    ),
-                  );
-                }).toList(),
               ),
             ),
           ],

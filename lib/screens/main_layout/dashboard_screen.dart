@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wisata_app/helper/session_manager.dart';
-import 'package:wisata_app/screens/main_screen.dart';
+import 'package:wisata_app/screens/news/news_screen.dart';
+import 'package:wisata_app/screens/vacation/vacation_screen.dart';
 import 'package:wisata_app/utils/contants.dart';
 import 'package:wisata_app/widgets/button_nav_bar.dart';
 import 'package:wisata_app/widgets/category_card.dart';
@@ -13,12 +14,32 @@ class DashboardScreen extends StatelessWidget {
     await SessionManager().checkLoginStatus(context);
   }
 
+  String greetings(){
+    final currentTime = DateTime.now();
+    final currentHour = currentTime.hour;
+
+    String greeting;
+
+    if (currentHour < 12) {
+      greeting = 'Selamat Pagi';
+    } else if (currentHour < 18) {
+      greeting = 'Selamat Siang';
+    } else if (currentHour < 21) {
+      greeting = 'Selamat Sore';
+    } else {
+      greeting = 'Selamat Malam';
+    }
+    return greeting;
+  }
+
   @override
   Widget build(BuildContext context) {
     checkLoginStatus(context);
+    String? greeting = greetings();
+    String? firstName = SessionManager().getFirstName();
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: ButtonNavBar(selectedMenu: MenuState.home),
+      bottomNavigationBar: const ButtonNavBar(selectedMenu: MenuState.home),
       body: Stack(
         children: <Widget>[
           Container(
@@ -27,7 +48,8 @@ class DashboardScreen extends StatelessWidget {
               color: bgLightColor,
               image: DecorationImage(
                 alignment: Alignment.centerLeft,
-                image: AssetImage("assets/images/bg-dashboard.png"),
+                image: AssetImage("assets/images/masjid.jpg"),
+                fit: BoxFit.fill
               ),
             ),
           ),
@@ -50,15 +72,13 @@ class DashboardScreen extends StatelessWidget {
                       child: SvgPicture.asset("assets/icons/menu.svg"),
                     ),
                   ),
-                  const Text("Good Morning \nHappy People",
-                      style: TextStyle(
+                  Text('$greeting \n$firstName',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 35,
                         color: textLightColor,
                       )),
-                  SizedBox(height: size.height * .03),
-                  const SearchBar(),
-                  SizedBox(height: size.height * .03),
+                  SizedBox(height: size.height * .1),
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 2,
@@ -72,19 +92,27 @@ class DashboardScreen extends StatelessWidget {
                           press: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return MainScreen();
+                              return const VacationScreen();
                             }));
                           },
                         ),
                         CategoryCard(
                           title: "News",
                           imgSrc: "assets/icons/news.png",
-                          press: () {},
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const NewsScreen();
+                                })
+                            );
+                          },
                         ),
                         CategoryCard(
                           title: "Ticket",
                           imgSrc: "assets/icons/ticket.png",
-                          press: () {},
+                          press: () {
+
+                          },
                         ),
                         CategoryCard(
                           title: "Lodging",

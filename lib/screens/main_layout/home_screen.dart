@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wisata_app/common/constants.dart';
-import 'package:wisata_app/screens/login_screen.dart';
 import 'package:wisata_app/common/size_config.dart';
+import 'package:wisata_app/screens/main_layout/login_screen.dart';
 import 'package:wisata_app/widgets/default_button.dart';
 
 class HomeScreen extends StatefulWidget {

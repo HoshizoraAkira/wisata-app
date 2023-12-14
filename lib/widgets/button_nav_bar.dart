@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wisata_app/common/constants.dart';
-import 'package:wisata_app/screens/account_screen.dart';
-import 'package:wisata_app/screens/dashboard_screen.dart';
+import 'package:wisata_app/screens/main_layout/account_screen.dart';
+import 'package:wisata_app/screens/main_layout/dashboard_screen.dart';
 
 enum MenuState { home, profile }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wisata_app/screens/dashboard_screen.dart';
-import 'package:wisata_app/screens/login_screen.dart';
+import 'package:wisata_app/screens/main_layout/dashboard_screen.dart';
+import 'package:wisata_app/screens/main_layout/login_screen.dart';
 
 class SessionManager {
   static SessionManager? _instance;
@@ -65,6 +65,10 @@ class SessionManager {
 
   String? getUsername() {
     return _preferences!.getString('username');
+  }
+
+  String? getFirstName() {
+    return _preferences!.getString('firstName');
   }
 
   getIsLogin() {

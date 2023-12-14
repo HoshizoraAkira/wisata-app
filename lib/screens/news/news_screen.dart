@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_app/models/tourism_place.dart';
-import 'package:wisata_app/screens/detail_screen.dart';
+import 'package:wisata_app/models/news.dart';
+import 'package:wisata_app/screens/news/detail_news_screen.dart';
 import 'package:wisata_app/utils/contants.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class NewsScreen extends StatelessWidget {
+  const NewsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wisata Bandung'),
+        title: const Text('Berita Wisata Indonesia'),
         backgroundColor: primaryColor,
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          final TourismPlace place = tourismPlaceList[index];
+          final TourismNews place = tourismNewsList[index];
           return InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return DetailScreen(place: place);
+                return DetailNews(news: place);
               }));
             },
             child: Card(
@@ -28,7 +28,7 @@ class MainScreen extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: Image.asset(place.imageAsset),
+                    child: Image.network(place.imageUrl),
                   ),
                   Expanded(
                     flex: 2,
@@ -38,13 +38,12 @@ class MainScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            place.name,
+                            place.title,
                             style: const TextStyle(fontSize: 16.0),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(place.location),
                         ],
                       ),
                     ),
@@ -54,7 +53,7 @@ class MainScreen extends StatelessWidget {
             ),
           );
         },
-        itemCount: tourismPlaceList.length,
+        itemCount: tourismNewsList.length,
       ),
     );
   }
