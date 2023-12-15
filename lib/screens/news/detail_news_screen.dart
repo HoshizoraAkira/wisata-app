@@ -77,7 +77,7 @@ class DetailNews extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 news.content,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.justify,
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontFamily: 'Oxygen',

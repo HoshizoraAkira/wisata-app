@@ -56,61 +56,71 @@ class DetailVacation extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      const Icon(Icons.calendar_today),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        place.openDays,
-                        style: informationTextStyle,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      const Icon(Icons.access_time),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        place.openTime,
-                        style: informationTextStyle,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      const Icon(Icons.monetization_on),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        place.ticketPrice,
-                        style: informationTextStyle,
-                      ),
-                    ],
-                  ),
-                ],
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        const Icon(Icons.calendar_today),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          place.openDays,
+                          style: informationTextStyle,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        const Icon(Icons.access_time),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          place.openTime,
+                          style: informationTextStyle,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        const Icon(Icons.monetization_on),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          place.ticketPrice,
+                          style: informationTextStyle,
+                        ),
+                      ],
+                    ),
+                  ],
+                )
               ),
             ),
             Container(
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 place.description,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.justify,
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontFamily: 'Oxygen',
                 ),
               ),
             ),
+            const Text(
+              "Galeri",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30.0,
+                fontFamily: 'Staatliches',
+              ),
+            ),
             SizedBox(
-              height: 150,
+              height: 800,
               child: ListView(
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 children: place.imageUrls.map((url) {
                   return Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(url),
