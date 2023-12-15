@@ -60,6 +60,7 @@ class DetailVacation extends StatelessWidget {
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(
                       children: <Widget>[

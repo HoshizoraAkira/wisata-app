@@ -10,7 +10,7 @@ class VacationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wisata Bandung'),
+        title: const Text('Wisata Indonesia'),
         backgroundColor: primaryColor,
       ),
       body: ListView.builder(
@@ -23,32 +23,27 @@ class VacationScreen extends StatelessWidget {
               }));
             },
             child: Card(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Image.asset(place.imageAsset),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 5,
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Image.asset(
+                    place.imageAsset,
+                    fit: BoxFit.fill,
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            place.name,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(place.location),
-                        ],
-                      ),
+                  Text(
+                    place.name,
+                    textAlign: TextAlign.start
+                    ,
+                    style: const TextStyle(
+                      fontSize: 30.0,
+                      fontFamily: 'Staatliches',
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
